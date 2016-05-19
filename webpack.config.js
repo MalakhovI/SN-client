@@ -22,7 +22,7 @@ module.exports = {
     new NpmInstallPlugin()
   ],
   module: {
-    /*preLoaders: [
+   /* preLoaders: [
       {
         test: /\.js$/,
         loaders: ['eslint'],

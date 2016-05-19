@@ -1,11 +1,14 @@
 import {
   GET_PHOTOS_REQUEST,
-  GET_PHOTOS_SUCCESS
+  GET_PHOTOS_SUCCESS,
+  SIGNIN_USER,
+  SIGNUP_USER
 } from '../constants/Page'
 const initialState = {
   year: 2016,
   photos: [],
-  fetching: false
+  fetching: false,
+  currentPage: ''
 }
 
 export default function page(state = initialState, action) {
@@ -17,6 +20,10 @@ export default function page(state = initialState, action) {
     case GET_PHOTOS_SUCCESS:
       return { ...state, photos: action.payload, fetching: false }
 
+    case SIGNIN_USER:
+      return { ...state, currentPage: action.payload }
+    case SIGNUP_USER:
+      return { ...state, currentPage: action.payload }
     default:
       return state;
   }

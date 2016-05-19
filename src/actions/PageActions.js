@@ -4,17 +4,19 @@
 import $ from "jquery";
 import {
   GET_PHOTOS_REQUEST,
-  GET_PHOTOS_SUCCESS
+  GET_PHOTOS_SUCCESS,
+  SIGNIN_USER,
+  SIGNUP_USER
 } from '../constants/Page'
 
 export function getPhotos(year) {
 
   return (dispatch) => {
-    dispatch({
-      type: GET_PHOTOS_REQUEST,
-      payload: year
-    })
-
+      dispatch({
+        type: GET_PHOTOS_REQUEST,
+        payload: year
+      })
+/*
         $.ajax({
             method:'POST',
             url:'http://127.0.0.1:9000/users/addUsername',
@@ -48,15 +50,29 @@ export function getPhotos(year) {
             }
         });
 
+*/
 
 
-
-/*
+/**/
     setTimeout(() => {
       dispatch({
         type: GET_PHOTOS_SUCCESS,
         payload: [1,2,3,4,5]
       })
-    }, 1000)*/
+    }, 1000)/**/
+  }
+}
+
+export function signIn(){
+  return {
+    type: SIGNIN_USER,
+    payload: 'userPage'
+  }
+}
+
+export function signUp(){
+  return {
+    type: SIGNUP_USER,
+    payload: 'signupForm'
   }
 }

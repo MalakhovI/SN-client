@@ -16,13 +16,18 @@ function mapDispatchToProps(dispatch) {
     pageActions: bindActionCreators(pageActions, dispatch)
   }
 }
-
 class App extends Component {
   render() {
-    const { user, page} = this.props;
-    const { getPhotos } = this.props.pageActions;
+    const { user, page}= this.props;
+    const { getPhotos, signIn, signUp } = this.props.pageActions;
     return <div className='row'>
-      <Page photos={page.photos} year={page.year} getPhotos={getPhotos} fetching={page.fetching}/>
+      <Page photos={page.photos}
+            year={page.year}
+            getPhotos={getPhotos}
+            signIn={signIn}
+            signUp={signUp}
+            fetching={page.fetching}
+            currentPage={page.currentPage}/>
       <User name={user.name} />
     </div>
   }
