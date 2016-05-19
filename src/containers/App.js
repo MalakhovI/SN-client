@@ -19,14 +19,13 @@ function mapDispatchToProps(dispatch) {
 class App extends Component {
   render() {
     const { user, page}= this.props;
-    const { getPhotos, signIn, signUp } = this.props.pageActions;
+    const { signIn, signUp, authorizationCall } = this.props.pageActions;
     return <div className='row'>
-      <Page photos={page.photos}
-            year={page.year}
-            getPhotos={getPhotos}
+      <Page
             signIn={signIn}
             signUp={signUp}
-            fetching={page.fetching}
+            authorizationCall={authorizationCall}
+            iUsername={page.iUsername}
             currentPage={page.currentPage}/>
       <User name={user.name} />
     </div>

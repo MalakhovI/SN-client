@@ -3,12 +3,30 @@
  */
 import $ from "jquery";
 import {
-  GET_PHOTOS_REQUEST,
-  GET_PHOTOS_SUCCESS,
   SIGNIN_USER,
-  SIGNUP_USER
+  SIGNUP_USER,
+  SIGNIN_USER_REQ
 } from '../constants/Page'
+export function signIn(){
+  return {
+    type: SIGNIN_USER,
+    payload: 'userPage'
+  }
+}
 
+export function signUp(){
+  return {
+    type: SIGNUP_USER,
+    payload: 'signupForm'
+  }
+}
+export function authorizationCall(){
+  return {
+      type: SIGNIN_USER_REQ,
+      payload: 'qqq'
+  }
+}
+/*
 export function getPhotos(year) {
 
   return (dispatch) => {
@@ -53,26 +71,13 @@ export function getPhotos(year) {
 */
 
 
-/**/
+/*
     setTimeout(() => {
       dispatch({
         type: GET_PHOTOS_SUCCESS,
         payload: [1,2,3,4,5]
       })
-    }, 1000)/**/
-  }
-}
+    }, 1000)
+  } // return
+}//getPhotos*/
 
-export function signIn(){
-  return {
-    type: SIGNIN_USER,
-    payload: 'userPage'
-  }
-}
-
-export function signUp(){
-  return {
-    type: SIGNUP_USER,
-    payload: 'signupForm'
-  }
-}
