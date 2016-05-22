@@ -5,3 +5,4 @@
 export const SIGNIN_USER = 'SIGNIN_USER'
 export const SIGNUP_USER = 'SIGNUP_USER'
 export const SIGNIN_USER_REQ = 'SIGNIN_USER_REQ'
+export const SEND_USER_DATA = 'SEND_USER_DATA'

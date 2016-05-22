@@ -27,6 +27,16 @@ export function authorizationCall(){
   }
 }
 /*
+export function sendUserForm(){
+    return (dispatch) => {
+        dispatch({
+            type: SEND_USER_DATA,
+            payload: true
+        })}
+}//sendUserForm
+
+
+/*
 export function getPhotos(year) {
 
   return (dispatch) => {

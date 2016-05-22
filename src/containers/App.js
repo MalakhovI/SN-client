@@ -21,12 +21,8 @@ class App extends Component {
     const { user, page}= this.props;
     const { signIn, signUp, authorizationCall } = this.props.pageActions;
     return <div className='row'>
-      <Page
-            signIn={signIn}
-            signUp={signUp}
-            authorizationCall={authorizationCall}
-            iUsername={page.iUsername}
-            currentPage={page.currentPage}/>
+
+    	 {this.props.children}
       <User name={user.name} />
     </div>
   }
