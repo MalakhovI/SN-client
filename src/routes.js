@@ -3,13 +3,18 @@
  */
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
+import App from  './containers/App'
+
 import SignUpForm from './components/SignUpForm'
-import mainTEMP from './components/mainTEMP'
-import App from './containers/App'
+import Home from './components/Home'
+import Page from  './components/Page'
+import IndexPage from './components/IndexPage'
+
 export default (
     <Route path="/" component={App}>
-        <IndexRoute component={mainTEMP} />
+        <IndexRoute component={IndexPage} />
         <Route path="SignUpForm" component={SignUpForm} />
-        <Route path="mainTEMP" component={mainTEMP} />
+        <Route path="Page" component={Page} />
+
     </Route>
 );

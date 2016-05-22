@@ -8,8 +8,7 @@ import * as pageActions from '../actions/PageActions'
 function mapStateToProps (state) {
   return {
     user: state.user, // (1)
-    page: state.page // (2)
-  }
+      }
 }
 function mapDispatchToProps(dispatch) {
   return {
@@ -22,8 +21,8 @@ class App extends Component {
     const { signIn, signUp, authorizationCall } = this.props.pageActions;
     return <div className='row'>
 
-    	 {this.props.children}
-      <User name={user.name} />
+     {this.props.children}
+      <User name={user.name} token={user.token} />
     </div>
   }
 }

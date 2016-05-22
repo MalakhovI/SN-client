@@ -60,7 +60,11 @@ h3 {
 }
 .user {
     width: 20%;
+    float: right;
     vertical-align: top;
+}
+.new-block{
+    float: left;
 }
 
 .btn {

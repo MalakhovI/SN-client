@@ -1,8 +1,8 @@
 /**
  * Created by Malakhov_Ivan on 13.05.2016.
  */
-import $ from "jquery";
-import {
+//import $ from "jquery";
+/*import {
   SIGNIN_USER,
   SIGNUP_USER,
   SIGNIN_USER_REQ
@@ -14,18 +14,6 @@ export function signIn(){
   }
 }
 
-export function signUp(){
-  return {
-    type: SIGNUP_USER,
-    payload: 'signupForm'
-  }
-}
-export function authorizationCall(){
-  return {
-      type: SIGNIN_USER_REQ,
-      payload: 'qqq'
-  }
-}
 /*
 export function sendUserForm(){
     return (dispatch) => {
