@@ -45,6 +45,7 @@ export default class AddNews extends Component {
         console.log('###', result)
         if(result.text){
           data.link = JSON.parse(result.text).fileName;
+
           $.post({
            method:'POST',
            url:'http://127.0.0.1:9000/news/createNews',
@@ -58,16 +59,6 @@ export default class AddNews extends Component {
            crossDomain: true
            }).success(function(result){
            console.log('____1___', result);
-           //siginSuccess(result.token);
-           //if(result.err){
-           //  LoginError(result.err);
-           //}
-           //else{
-           //  if (result.token){
-           //    Cookies.set('token',result.token);
-           //    return browserHistory.push("/Page");}
-           //  else{LoginError('Incorrect token format');}
-           //}
 
            }).error(function(err){
            console.log('err__',err.responseText);

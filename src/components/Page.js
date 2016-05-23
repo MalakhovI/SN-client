@@ -4,7 +4,8 @@
 import React, { PropTypes, Component } from 'react'
 import AddNews from './AddNews'
 import MyNews from  './MyNews'
-
+import { browserHistory } from 'react-router'
+import checkToken from '../Utils/TokinHendlers'
 /*import SignUpForm from '../components/SignUpForm'
 import App from '../containers/App'
 import history from '../index'
@@ -22,10 +23,12 @@ export default class Page extends Component {
 
   render() {
 
-     return(<div className='new-block'>
-        <AddNews />
+    if(!checkToken()){ return <div>{browserHistory.push("/Home")}</div>;}
+    else{return (<div className='new-block'>
+        <AddNews />{' '}
+        <br />
         <MyNews />
-        </div>)
+        </div>)}
   }//render
 }//Page
 

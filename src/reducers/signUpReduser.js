@@ -1,12 +1,12 @@
-import {SEND_USER_DATA} from '../constants/Page'
+import {SEND_USER_DATA_ERR} from '../constants/Page'
 const initialState = {
-    loading: false
+    errMsg: ''
 }
 
 export default function signUpReduser(state = initialState,action) {
     switch (action.type) {
-    case SEND_USER_DATA:
-        return { ...state, loading: action.payload }
+    case SEND_USER_DATA_ERR:
+        return { ...state, errMsg: action.payload }
 
     default:
     return state;

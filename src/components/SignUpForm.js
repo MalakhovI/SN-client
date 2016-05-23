@@ -2,32 +2,36 @@
  * Created by Malakhov_Ivan on 19.05.2016.
  */
 import React, { PropTypes, Component } from 'react'
-import {SEND_USER_DATA} from '../constants/Page'
+import {SEND_USER_DATA_ERR, SIGNUP_USER_SUCCESS} from '../constants/Page'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { browserHistory } from 'react-router'
+import {signupUserSuccess} from '../actions/HomeActios.js'
+import Home from './Home'
 import $ from "jquery";
+
 
 //component configuration
 function mapStateToProps (state) {
     return {
-        currentState: state.signUpReduser // (1)
+      signUpReduser: state.signUpReduser, // (1)
+      home: state.home // (1)
     }
 }//mapStateToProps
 function mapDispatchToProps(dispatch) {
   return {
-    sendUserForm: bindActionCreators(sendUserForm, dispatch)
+    inputErrorMsg: bindActionCreators(inputErrorMsg, dispatch),
+    signupUserSuccess: bindActionCreators(signupUserSuccess, dispatch)
   }
 }
-
-function sendUserForm(){
-      return (dispatch) => {
-        dispatch({
-        type: SEND_USER_DATA,
-        payload: true
-    })}
-
-
+export function inputErrorMsg(errMsg){
+    return (dispatch) => {
+      dispatch({
+        type: SEND_USER_DATA_ERR,
+        payload: errMsg
+      })}
 }//sendUserForm
+
 
 
 class SignUpForm extends Component {
@@ -38,10 +42,9 @@ class SignUpForm extends Component {
       LastName :document.getElementById('iLastName').value,
       Email    :document.getElementById('iEmail').value,
       Password :document.getElementById('iPassword').value
-  }
+  };
+   const {inputErrorMsg, signupUserSuccess} =  this.props;
     if (data.FirstName&& data.LastName && data.Email && data.Password){
-
-      this.props.sendUserForm();
       $.ajax({
         method:'POST',
         url:'http://127.0.0.1:9000/users/addUsername',
@@ -51,28 +54,39 @@ class SignUpForm extends Component {
         data:data,
         crossDomain: true
       }).success(function(result){
-        console.log('____1___', result);
+        inputErrorMsg('');
+        signupUserSuccess('User created successfully. Sign in please.');
+        return browserHistory.push("/");
+        //console.log('____1___', result);
+
       }).error(function(err){
-        console.log('____2___', err);
-      })
-      //  .catch(function(err){
-      //  console.log('^^^^^^^^^^^', err);
-      //});
+        //console.log('____2___', err);
+       inputErrorMsg(err.responseText);
+      });/*
+         .catch(function(err){
+         console.log('__3__', err);
+      });//ajax
        // .success(
        //(dispatch) => {
        // dispatch({
        //   type: SEND_USER_DATA,
        //   payload: false
        // })}
-       // )//ajax
+       // )*/
     }
-console.log('data',data);
-
-
-
+    else{
+      let elementName=[];
+      if(!data.FirstName)elementName.push('FirstName');
+      if(!data.LastName)elementName.push('LastName');
+      if(!data.Email)elementName.push('FirstName');
+      if(!data.Password)elementName.push('Password');
+      let errMsg='required - '+elementName.join(', ')
+      inputErrorMsg(errMsg);
+        }
     }// submitIT
+
   render() {
-      const {loading}= this.props.currentState;
+      const {errMsg}= this.props.signUpReduser;
 
     return (<div className='ib page'>
       <label name="iFirstName">First name:</label>
@@ -91,11 +105,8 @@ console.log('data',data);
       <br />
 
       <br />
-        <button type="submit"  className='btn' onClick={::this.submitIT}>Submit(На сервер!!!)</button>
-      {loading ? <p> Загрузка... </p>
-       :
-       <p> Успешнинько </p>
-       }
+        <button type="submit"  className='btn' onClick={::this.submitIT}>Submit</button>
+        <span>{errMsg}</span>
     </div>)
   }//render
 }//SignUpForm
