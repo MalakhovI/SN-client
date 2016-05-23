@@ -8,6 +8,7 @@ import $ from "jquery";
 import {inputErrorMsg} from '../components/SignUpForm'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { browserHistory } from 'react-router'
 
 //component configuration
 function mapStateToProps (state) {
@@ -43,10 +44,18 @@ sendReq(){
       data:data,
       crossDomain: true
     }).success(function(result){
+      console.log('******',result);
       inputErrorMsg('');
+      if(Cookies.get('lastName'))
+      {document.cookie = 'lastName' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';};
+      Cookies.set('lastName',result.lastName, { expires: 7365 });
+      if(Cookies.get('firstName'))
+      {document.cookie = 'firstName' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';};
+
+      Cookies.set('firstName',result.firstName, { expires: 7365 });
+      browserHistory.push('/');
       //signupUserSuccess('User created successfully. Sign in please.');
       //return browserHistory.push("/");
-      console.log('____1___', result);
 
     }).error(function(err){
       console.log('____2___', err);
@@ -63,9 +72,11 @@ sendReq(){
   }
 }
 
-/*
+/**/
   constructor (props) {
     super(props);
+    const {inputErrorMsg} =  this.props;
+    inputErrorMsg('');/*
     var data = {userId: Cookies.get('userId')};
     $.ajax({
       method:'GET',
@@ -81,31 +92,51 @@ sendReq(){
 
     }).error(function(err){
       console.log('__Err__', err);
-    })
-  }//constructor*/
+    })*/
+  }//constructor/**/
   render(){
     const {errMsg}= this.props.signUpReduser;
-    return(<div className="EditProfileForm">
-    <label name="iFirstName">First name(Current - {Cookies.get('firstName')}):</label>
-      <br />
-    <input placeholder="New first name" id='iFirstName' type="text" className="form-control"/>
-      <br />
-
-    <label name="iLastName">Last name(Current - {Cookies.get('lastName')}):</label>
-      <br />
-    <input placeholder="New last name" id='iLastName' type="text" className="form-control"/>
-      <br />
-    <label name="iOldPassword">Enter old Password:</label>
-      <br />
-    <input placeholder="Enter old Password" id='iOldPassword' type="password" className="form-control"/>
-      <br />
-    <label name="iNewPassword">Enter new Password:</label>
-      <br />
-    <input placeholder="Enter new Password" id='iNewPassword' type="password" className="form-control"/>
-      <br />
-
-    <button className='btn' onClick={::this.sendReq}>Update</button>
-      <span>{errMsg}</span>
+    return(<div className="col-md-8 col-sm-7">
+      <div className='row user-block'>
+        <div className="col-lg-6">
+          <div>
+            <span id="basic-addon1">First name(Current - {Cookies.get('firstName')}):</span>
+            <input placeholder="New first name" id='iFirstName' type="text" className="input-line form-control"/>
+          </div>
+        </div>
+      </div>
+      <div className='row user-block'>
+        <div className="col-lg-6">
+          <div>
+            <span id="basic-addon1">Last name(Current - {Cookies.get('lastName')}):</span>
+            <input placeholder="New last name" id='iLastName' type="text" className="input-line form-control"/>
+          </div>
+        </div>
+      </div>
+      <div className='row user-block'>
+        <div className="col-lg-6">
+          <div>
+            <span id="basic-addon1">Enter old Password:</span>
+            <input placeholder="Enter old Password" id='iOldPassword' type="password" className="input-line form-control"/>
+          </div>
+        </div>
+      </div>
+      <div className='row user-block'>
+        <div className="col-lg-6">
+          <div>
+            <span id="basic-addon1">Enter new Password:</span>
+            <input placeholder="Enter new Password" id='iNewPassword' type="password" className="input-line form-control"/>
+          </div>
+        </div>
+      </div>
+      <div className='row user-block'>
+        <div className="col-lg-12">
+          <div>
+            <button className='btn btn-primary' onClick={::this.sendReq}>Update</button>
+            <span className='error-msg'>{errMsg}</span>
+          </div>
+        </div>
+      </div>
     <br />
   </div>)
   }//render

@@ -9,6 +9,7 @@ import { browserHistory } from 'react-router'
 import {signupUserSuccess} from '../actions/HomeActios.js'
 import Home from './Home'
 import $ from "jquery";
+import checkToken from '../Utils/TokinHendlers'
 
 
 //component configuration
@@ -78,7 +79,7 @@ class SignUpForm extends Component {
       let elementName=[];
       if(!data.FirstName)elementName.push('FirstName');
       if(!data.LastName)elementName.push('LastName');
-      if(!data.Email)elementName.push('FirstName');
+      if(!data.Email)elementName.push('Email');
       if(!data.Password)elementName.push('Password');
       let errMsg='required - '+elementName.join(', ')
       inputErrorMsg(errMsg);
@@ -87,26 +88,48 @@ class SignUpForm extends Component {
 
   render() {
       const {errMsg}= this.props.signUpReduser;
-
-    return (<div className='ib page'>
-      <label name="iFirstName">First name:</label>
-      <input placeholder="First name" id='iFirstName' type="text" className="form-control"/>
-      <br />
-
-      <label name="iLastName">Last name:</label>
-      <input placeholder="Last name" id='iLastName' type="text" className="form-control"/>
-      <br />
-
-      <label name="iEmail">Email:</label>
-      <input placeholder="email" id='iEmail' type="email" className="form-control"/>
-      <br />
-      <label name="iPassword">Password:</label>
-      <input placeholder="Password" id='iPassword' type="password" className="form-control"/>
-      <br />
-
-      <br />
-        <button type="submit"  className='btn' onClick={::this.submitIT}>Submit</button>
-        <span>{errMsg}</span>
+    if(checkToken()){ return <div>{browserHistory.push("/")}</div>;}
+    return (<div className='col-md-8 col-sm-7'>
+      <div className='row user-block'>
+        <div className="col-lg-6">
+          <div>
+            <span id="basic-addon1">First name:</span>
+            <input placeholder="First name" id='iFirstName' type="text" className="input-line form-control"/>
+          </div>
+        </div>
+      </div>
+      <div className='row user-block'>
+        <div className="col-lg-6">
+          <div>
+            <span id="basic-addon1">Last name:</span>
+            <input placeholder="Last name" id='iLastName' type="text" className="input-line form-control"/>
+          </div>
+        </div>
+      </div>
+      <div className='row user-block'>
+        <div className="col-lg-6">
+          <div>
+            <span id="basic-addon1">Email:</span>
+            <input placeholder="email" id='iEmail' type="email" className="input-line form-control"/>
+          </div>
+        </div>
+      </div>
+      <div className='row user-block'>
+        <div className="col-lg-6">
+          <div>
+            <span id="basic-addon1">Password:</span>
+            <input placeholder="Password" id='iPassword' type="password" className="input-line form-control"/>
+          </div>
+        </div>
+      </div>
+      <div className='row user-block'>
+        <div className="col-lg-12">
+          <div>
+            <button type="submit"  className='btn btn-primary' onClick={::this.submitIT}>Submit</button>
+            <span className='error-msg'>{errMsg}</span>
+          </div>
+        </div>
+      </div>
     </div>)
   }//render
 }//SignUpForm

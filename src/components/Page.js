@@ -6,25 +6,13 @@ import AddNews from './AddNews'
 import MyNews from  './MyNews'
 import { browserHistory } from 'react-router'
 import checkToken from '../Utils/TokinHendlers'
-/*import SignUpForm from '../components/SignUpForm'
-import App from '../containers/App'
-import history from '../index'
-import { Router, Route } from 'react-router'
-import { push } from 'react-router-redux'*/
-//-----------------------
-/*import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-import { Router, Route, browserHistory } from 'react-router'
-const history = syncHistoryWithStore(browserHistory, store);*/
-
-
-
 
 export default class Page extends Component {
 
   render() {
 
     if(!checkToken()){ return <div>{browserHistory.push("/Home")}</div>;}
-    else{return (<div className='new-block'>
+    else{return (<div className='col-md-8 col-sm-7'>
         <AddNews />{' '}
         <br />
         <MyNews />

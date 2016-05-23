@@ -23,11 +23,16 @@ export default class UserTab extends Component {
     //const { name } = this.props
     var userName = Cookies.get('firstName') +' '+ Cookies.get('lastName');
     return <div className='UserTab'>
-      <div className='userName'>{userName}</div>
-      <br />{' '}
-      <button className='btn' onClick={::this.onLogOutBtnClick}>LogOut</button>
-      <br />{' '}
-      <button className='btn' onClick={::this.onEditProfileBtnClick}>Edit Profile</button>
+      <div className='userName main-name'>Hi, {userName}!</div>
+      <div className='user-block'>
+        <button className='btn btn-primary user-btn' onClick={::this.onLogOutBtnClick}>LogOut</button>
+      </div>
+      <div className='user-block'>
+        <button className='btn btn-success user-btn' onClick={::this.onEditProfileBtnClick}>Edit Profile</button>
+      </div>
+      <div className='user-block'>
+        <button className='btn btn-info user-btn'>Friends</button>
+      </div>
     </div>
   }// render
 } // UserTab

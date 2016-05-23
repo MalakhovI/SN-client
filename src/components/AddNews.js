@@ -6,6 +6,8 @@ import  Cookies from "cookies-js"
 import $ from "jquery";
 var request = require("superagent");
 var Dropzone = require('react-dropzone');
+import Page from './Page'
+import { browserHistory } from 'react-router'
 var ChoosedFile;
 
 var DropzoneDemo = React.createClass({
@@ -17,8 +19,8 @@ var DropzoneDemo = React.createClass({
   render: function () {
     return (
       <div>
-        <Dropzone onDrop={this.onDrop}>
-          <div>Try dropping some files here, or click to select files to upload.</div>
+        <Dropzone onDrop={this.onDrop} id='iDrop'>
+          <div className='drop-box-text'>Try dropping some files here, or click to select files to upload.</div>
         </Dropzone>
       </div>
     );
@@ -58,8 +60,8 @@ export default class AddNews extends Component {
            },
            crossDomain: true
            }).success(function(result){
-           console.log('____1___', result);
-
+           console.log('__dsds__1___', result);
+            return browserHistory.push("/Home");
            }).error(function(err){
            console.log('err__',err.responseText);
            //LoginError(err.responseText);
@@ -71,23 +73,32 @@ export default class AddNews extends Component {
   render() {
 
     //const { name } = this.props
-    return <div className='ib'>
-
-      <p>форма для добавления новостей</p>
-      <div name="addNewsForm">
-        <label>Title:</label>
-        <input placeholder="Title" id='iTitle' type="text" className="form-control" />
-        <br />
-        <label>Text:</label>
-        <textarea placeholder="Enter text here" id='iText' className="Text"></textarea>
-        <br />
-        <label>Add picture:</label>
-        <DropzoneDemo />
-        <br />
-        <button className='btn' onClick={::this.SendNews}>Ok</button>
-        <br />
+    return <div className='news-create'>
+      <div className='row user-block'>
+        <div className="col-lg-6">
+          <div className='user-block'>
+            <span id="basic-addon1">Title:</span>
+            <input placeholder="Title" id='iTitle' type="text" className="input-line form-control" />
+          </div>
+          <div className='user-block'>
+            <span id="basic-addon2">Text:</span>
+            <textarea placeholder="Enter text here" id='iText' className="form-control area-text" ></textarea>
+          </div>
+        </div>
+        <div className="col-lg-6">
+          <div className='user-block'>
+            <span id="basic-addon3">Add picture:</span>
+            <DropzoneDemo />
+          </div>
+        </div>
       </div>
-
+      <div className='row user-block'>
+        <div className="col-lg-6">
+          <div>
+            <button className='btn btn-primary user-btn' onClick={::this.SendNews}>Ok</button>
+          </div>
+        </div>
+      </div>
     </div>
   }
 }
