@@ -67,26 +67,28 @@ class Home extends Component {
     onSignUpBtnClick(e) {
     return browserHistory.push("/SignUpForm");
   }
-  constructor (props) {
+  enterPres(e){    if (e.key === 'Enter') {
+    this.onSignInBtnClick();}}
 
-    super(props);
+  componentDidMount () {
     const {LoginError} = this.props.HomeActios;
     LoginError('');
+    if(checkToken()){ return <div>{browserHistory.push("/")}</div>;}
+
   }
+
     render() {
     const {errMsg,signUpMsg}= this.props.home;
-    console.log('____2___', this.props);
 
-      if(checkToken()){ return <div>{browserHistory.push("/")}</div>;}
     return (<div className='col-md-8 col-sm-7'>
       <div className='user-block row'>
         <div className='col-md-3 col-sm-4'>
-          <input placeholder="Email" id='iEmail' type="email" className="form-control" />
+          <input placeholder="Email" id='iEmail' type="email" onKeyPress={::this.enterPres} className="form-control" />
         </div>
       </div>
       <div className='user-block row'>
         <div className='col-md-3 col-sm-4'>
-          <input placeholder="Password" id='iPassword' type="password" className="form-control"  />
+          <input placeholder="Password" id='iPassword' type="password"  onKeyPress={::this.enterPres} className="form-control"  />
         </div>
       </div >
       <div className='user-block'>

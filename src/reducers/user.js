@@ -2,7 +2,6 @@ import {SIGIN_SUCCESS} from '../constants/Page'
 
 
 const initialState = {
-  name: 'Аноним',
   token:''
 }
 

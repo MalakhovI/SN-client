@@ -58,22 +58,9 @@ class SignUpForm extends Component {
         inputErrorMsg('');
         signupUserSuccess('User created successfully. Sign in please.');
         return browserHistory.push("/");
-        //console.log('____1___', result);
-
-      }).error(function(err){
-        //console.log('____2___', err);
+      }).error (function(err){
        inputErrorMsg(err.responseText);
-      });/*
-         .catch(function(err){
-         console.log('__3__', err);
-      });//ajax
-       // .success(
-       //(dispatch) => {
-       // dispatch({
-       //   type: SEND_USER_DATA,
-       //   payload: false
-       // })}
-       // )*/
+      });
     }
     else{
       let elementName=[];
@@ -86,9 +73,11 @@ class SignUpForm extends Component {
         }
     }// submitIT
 
-  render() {
-      const {errMsg}= this.props.signUpReduser;
+  componentDidMount () {
     if(checkToken()){ return <div>{browserHistory.push("/")}</div>;}
+  }
+  render() {
+    const {errMsg}= this.props.signUpReduser;
     return (<div className='col-md-8 col-sm-7'>
       <div className='row user-block'>
         <div className="col-lg-6">

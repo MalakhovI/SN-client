@@ -6,7 +6,6 @@ import Home from './Home'
 import { Link } from 'react-router'
 export default class NoPage extends Component {
   render(){
-    //const { name } = this.props
     return <div className='NoPage'>
       <br />{' '}
       We dose not have thi page

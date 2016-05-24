@@ -20,13 +20,4 @@ export default class Page extends Component {
   }//render
 }//Page
 
-Page.propTypes = {
-  /*
-   year: PropTypes.number.isRequired,
-   photos: PropTypes.array.isRequired,
-   getPhotos: PropTypes.func.isRequired,
-   fetching: PropTypes.bool.isRequired
-   */
-};
-
 

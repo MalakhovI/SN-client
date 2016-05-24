@@ -20,7 +20,6 @@ export default class UserTab extends Component {
   }
 
   render(){
-    //const { name } = this.props
     var userName = Cookies.get('firstName') +' '+ Cookies.get('lastName');
     return <div className='UserTab'>
       <div className='userName main-name'>Hi, {userName}!</div>

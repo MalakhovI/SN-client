@@ -54,11 +54,8 @@ sendReq(){
 
       Cookies.set('firstName',result.firstName, { expires: 7365 });
       browserHistory.push('/');
-      //signupUserSuccess('User created successfully. Sign in please.');
-      //return browserHistory.push("/");
 
     }).error(function(err){
-      console.log('____2___', err);
       inputErrorMsg(err.responseText);
     });
   }     else{
@@ -67,33 +64,16 @@ sendReq(){
     if(!data.LastName)elementName.push('LastName');
     if(!data.OldPassword)elementName.push('OldPassword');
     if(!data.NewPassword)elementName.push('NewPassword');
-    let errMsg='required - '+elementName.join(', ')
+    let errMsg='required - '+elementName.join(', ');
     inputErrorMsg(errMsg);
   }
 }
 
-/**/
   constructor (props) {
     super(props);
     const {inputErrorMsg} =  this.props;
-    inputErrorMsg('');/*
-    var data = {userId: Cookies.get('userId')};
-    $.ajax({
-      method:'GET',
-      url:'http://127.0.0.1:9000/users/getUserProf',
-      dataType: 'json',
-      cache: false,
-      header:{'Access-Control-Allow-Origin': '*'},
-      data: data,
-      crossDomain: true
-    }).success(function(result){
-
-      console.log('__Suc__', result);
-
-    }).error(function(err){
-      console.log('__Err__', err);
-    })*/
-  }//constructor/**/
+    inputErrorMsg('');
+    }//constructor/
   render(){
     const {errMsg}= this.props.signUpReduser;
     return(<div className="col-md-8 col-sm-7">
