@@ -7,7 +7,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import $ from "jquery";
 import {GET_NEWS_SUCCESS} from '../constants/Page'
-import { getNews } from  '../actions/PageActions'
+//import { getNews } from  '../actions/PageActions'
+import * as CounterActions from '../actions/PageActions'
 import { browserHistory } from 'react-router'
 
 function mapStateToProps (state) {
@@ -17,9 +18,7 @@ function mapStateToProps (state) {
 }//mapStateToProps
 
 function mapDispatchToProps(dispatch) {
-  return {
-    getNews: () => getNews(dispatch)
-  }
+  return bindActionCreators(CounterActions, dispatch)
 }
 
 class MyNews extends Component {
@@ -45,17 +44,16 @@ class MyNews extends Component {
       })
   }//removeNews
   render() {
-
     const { News } = this.props.myNews;
     return <div>
           {
             News.map((entry, index) =>
               <div key={index} className='news-block'>
-                <span className="glyphicon glyphicon glyphicon-pencil update-news" aria-hidden="true"></span>
-                <span className="glyphicon glyphicon glyphicon-remove delete-news" onClick={this.removeNews.bind(this, entry.id)} aria-hidden="true"></span>
+                  <span className="glyphicon glyphicon glyphicon-pencil update-news" aria-hidden="true"></span>
+                  <span className="glyphicon glyphicon glyphicon-remove delete-news" onClick={this.removeNews.bind(this, entry.id)} aria-hidden="true"></span>
                 <h3 className='bold'>{entry.title}</h3>
-                <p>{entry.text}</p>
-                <div><img className='news-photo' src={entry.imgURL ? entry.imgURL :null} /></div>
+                <p className="news-text">{entry.text}</p>
+                <div>{entry.imgURL?<img className='news-photo' src={entry.imgURL ? entry.imgURL :null} />:null}</div>
               </div>
           )
 }

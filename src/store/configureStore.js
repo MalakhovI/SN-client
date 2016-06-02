@@ -12,7 +12,6 @@ export default function configureStore(initialState) {
   const store = createStore(
     rootReducer,
     initialState,
-
     applyMiddleware(thunk, logger, middlewareT));//
 
   if (module.hot) {

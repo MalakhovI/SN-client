@@ -8,31 +8,28 @@ import {
 import  Cookies from "cookies-js"
 import $ from "jquery";
 
-const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
+export function  setError(errMsg)
+{return {type:'DROPZONE_SET_ERROR', payload:errMsg, errFlag:true};};
 
-function increment() {
-  return {
-    type: INCREMENT_COUNTER
-  };
-}
-
-export function getNews(dispatch) {
+export function getNews() {
   let data = {userId: Cookies.get('userId')};
-  $.ajax({
-    method: 'GET',
-    url: 'http://127.0.0.1:9000/news/getNews',
-    dataType: 'json',
-    cache: false,
-    header: {'Access-Control-Allow-Origin': '*'},
-    data: data,
-    crossDomain: true,
-    error: function (error) {
-      console.log('getNews-err-', error)
+  return (dispatch) => {
+    $.ajax({
+      method: 'GET',
+      url: 'http://127.0.0.1:9000/news/getNews',
+      dataType: 'json',
+      cache: false,
+      header: {'Access-Control-Allow-Origin': '*'},
+      data: data,
+      crossDomain: true,
+      error: function (error) {
+        console.log('getNews-err-', error)
 
-    }
-  }).success(function(data){
-    return dispatch({type:'GET_NEWS_SUCCESS', payload: data});
-})
+      }
+    }).success(function (data) {
+      return dispatch({type: 'GET_NEWS_SUCCESS', payload: data});
+    })
+  }
 }
 
 
