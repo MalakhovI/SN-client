@@ -3,10 +3,11 @@
  */
 import React, { PropTypes, Component } from 'react'
 var DropzoneComponent = require('react-dropzone-component');
+import  Cookies from "cookies-js"
 import { connect } from 'react-redux'
-import { setError } from  '../actions/PageActions'
 import { bindActionCreators } from 'redux'
-
+import $ from "jquery";
+import { getNews, sendNewsToSrv, setError } from  '../actions/PageActions'
 import {
   DROPZONE_SET,
   DROPZONE_SET_ERROR,
@@ -14,25 +15,54 @@ import {
 } from  '../constants/Page'
 
 //------------Dropzone functions-------------------------
-function dropFile() {
-  console.log('dropFile/this--',this)
-  if (this.files.length === 1) {
-    this.options.params._setHaveFile(true);
-    this.options.params._setCurentDropzone(this);//for send
-
-  } else if (this.files.length > 1) {
-    this.options.params._setError("You can add only one file");
-    //now dropbox work with 1 file
-    this.removeFile(this.files[1]);
-  }
-}
 function removeFile(){
   if(this.files.length===0){this.options.params._setHaveFile(false);
   this.options.params._setCurentDropzone({});
+  this.options.params._setError('');
   }
+
+}
+function successFileUpload(file,res){
+  var data ={title: this.options.params._myNews.newsTitle,
+    text:this.options.params._myNews.newsText,
+    userId: Cookies.get('userId')
+  };
+  data.link = res.fileName;
+  this.options.params._sendNewsToSrv(data,this.options.params._getNews); // update wall
+  this.removeAllFiles();
+}
+
+function errorFileUpload(file,errMsg){
+  this.options.params._setError(errMsg);
+}
+
+function addFile(file) {
+
+  let errMsg = '';
+  //check file type
+  if ((file.type === 'image/jpeg') || (file.type === 'image/png') || (file.type === 'image/gif')) {
+    if (this.files.length === 1) {
+      this.options.params._setHaveFile(true);
+      this.options.params._setCurentDropzone(this);//for send
+      errMsg='';
+    } else if (this.files.length > 1) {
+      //now dropbox work with 1 file
+      this.removeFile(this.files[1]);
+    }
+  }
+  else {
+    errMsg = "You can use: png, jpg or gif.";
+
+    if (this.files.length > 1) {
+      //now dropbox work with 1 file
+      this.removeFile(this.files[1]);
+    }
+    console.log('errMsg---', file.type);
+  }
+
+  this.options.params._setError(errMsg);
 }
 //------------Dropzone functions-------------------------
-
 
 //------------Dropzone config----------------------------
   var eventHandlers = {
@@ -44,14 +74,14 @@ function removeFile(){
     dragover: null,
     dragleave: null,
     // All of these receive the file as first parameter:
-    addedfile: null,
+    addedfile: addFile,
     removedfile: removeFile,
-    thumbnail: dropFile,
-    error: null,
+    thumbnail: null,
     processing: null,
     uploadprogress: null,
     sending: null,
-    success: null,
+    success: successFileUpload,
+    error: errorFileUpload,
     complete: null,
     canceled: null,
     maxfilesreached: null,
@@ -73,60 +103,62 @@ function removeFile(){
   var djsConfig = {
     addRemoveLinks: true,
     autoProcessQueue: false,
-    maxFilesize : 5, // 5mb
+    maxFilesize : 10, // 10mb
     parallelUploads : 1,
     uploadMultiple : false,
-    maxFiles : 1,
-    dictMaxFilesExceeded:'You can add only one file'//,
-  };
+    maxFiles : 1/**/,
+    dictMaxFilesExceeded:'You can add only one file',
+    };
   var componentConfig = {
     iconFiletypes: ['.jpg', '.png', '.gif'],
+    acceptedFiles: ['image/*'],
     showFiletypeIcon: true,
     postUrl: 'http://127.0.0.1:9000/news/createFile'
   };
 //------------Dropzone config----------------------------
 
-
-
-//-----Actions for dropzone----------------------------
+//-----actions for dropzone----------------------------
 function setCurentDropzone(itm)
 {return {type:'DROPZONE_SET', payload: itm};}
 
 function  setHaveFile(haveFile)
 {return {type:'DROPZONE_SET_HAVE_FILE', payload:haveFile};};
-
 //-----actions for dropzone----------------------------
-///////////////////////////////////////////////////////////////////////////////
+
 function mapStateToProps (state) {
   return {
     myNews: state.myNews
   }
 }
 function mapDispatchToProps(dispatch) {
-  return {
- //   my_funct: () => my_funct(dispatch)
+   return {
     setError:bindActionCreators(setError,dispatch),
     setHaveFile:bindActionCreators(setHaveFile,dispatch),
     setCurentDropzone:bindActionCreators(setCurentDropzone,dispatch),
+    getNews:bindActionCreators(getNews,dispatch),
+    sendNewsToSrv:bindActionCreators(sendNewsToSrv,dispatch)
   }
 }
 ///////////////////////////////////////////////////////////////////////////////
-class Dropzone extends Component {
+class DropzoneMy extends Component {
   componentDidMount(){
    }
   render() {
-    const {setError,setHaveFile,setCurentDropzone}=this.props;
+    const {setError,setHaveFile,setCurentDropzone,myNews,getNews}=this.props;
     djsConfig.params={
       _setError:setError,
       _setHaveFile:setHaveFile,
       _setCurentDropzone:setCurentDropzone,
+      _getNews:getNews,
+      _myNews:myNews,
+      _sendNewsToSrv:sendNewsToSrv
     };
     return (
       <DropzoneComponent
         config={componentConfig}
         eventHandlers={eventHandlers}
-        djsConfig={djsConfig} />
+        djsConfig={djsConfig}/>
     )}
 }
-  export default connect(mapStateToProps,mapDispatchToProps)(Dropzone)
+  export default connect(mapStateToProps,mapDispatchToProps)(DropzoneMy)
 //------------Dropzone config-------------------------

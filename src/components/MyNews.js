@@ -5,11 +5,13 @@ import React, { PropTypes, Component } from 'react'
 import  Cookies from "cookies-js"
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import $ from "jquery";
-import {GET_NEWS_SUCCESS} from '../constants/Page'
-//import { getNews } from  '../actions/PageActions'
-import * as CounterActions from '../actions/PageActions'
 import { browserHistory } from 'react-router'
+import $ from "jquery";
+
+import {GET_NEWS_SUCCESS} from '../constants/Page'
+import * as Actions from '../actions/PageActions'
+import EditNewsForm from './EditNewsForm'
+
 
 function mapStateToProps (state) {
   return {
@@ -18,7 +20,7 @@ function mapStateToProps (state) {
 }//mapStateToProps
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(CounterActions, dispatch)
+  return bindActionCreators(Actions, dispatch)
 }
 
 class MyNews extends Component {
@@ -43,13 +45,23 @@ class MyNews extends Component {
         getNews();
       })
   }//removeNews
+
+  editNews(idNews, indexInNews, e){
+    const { News } = this.props.myNews;
+    const {editMyNews} =  this.props;
+
+    console.log('News=', News);
+    console.log('this=', this);
+    editMyNews(indexInNews,idNews);
+    return browserHistory.push("/EditNewsForm");
+  }
   render() {
     const { News } = this.props.myNews;
     return <div>
           {
             News.map((entry, index) =>
               <div key={index} className='news-block'>
-                  <span className="glyphicon glyphicon glyphicon-pencil update-news" aria-hidden="true"></span>
+                  <span className="glyphicon glyphicon glyphicon-pencil update-news" onClick={this.editNews.bind(this, entry.id, index)} aria-hidden="true"></span>
                   <span className="glyphicon glyphicon glyphicon-remove delete-news" onClick={this.removeNews.bind(this, entry.id)} aria-hidden="true"></span>
                 <h3 className='bold'>{entry.title}</h3>
                 <p className="news-text">{entry.text}</p>

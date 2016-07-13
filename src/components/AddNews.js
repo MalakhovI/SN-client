@@ -7,34 +7,11 @@ import $ from "jquery";
 import { connect } from 'react-redux'
 var request = require("superagent");
 import Page from './Page'
-import Dropzone from './AddNewsDropzone.js'
+import DropzoneMy from './AddNewsDropzone.js'
 import { browserHistory } from 'react-router'
 import * as actionCreators from '../actions/PageActions'
-//import { getNews, } from  '../actions/PageActions'
+import { getNews } from  '../actions/PageActions'
 import { bindActionCreators } from 'redux'
-
-function sendNewsToSrv(data,
-                       sucsessFunc=()=>console.log('Здесь должна быть функция !!'),
-                       errFunc=()=>console.log('Здесь должна быть функция !!')){
-   $.post({
-   method: 'POST',
-   url: 'http://127.0.0.1:9000/news/createNews',
-   dataType: 'json',
-   cache: false,
-   header: {'Access-Control-Allow-Origin': '*'},
-   data: data,
-   beforeSend: function (xhr, settings) {
-   xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('token'));
-   },
-   crossDomain: true
-   }).success(function (result) {
-     sucsessFunc();
-   }).error(function (err) {
-   console.log('err__', err.responseText);
-     errFunc();
-
-   })
-} //sendNewsToSrv
 
 function mapStateToProps (state) {
   return {
@@ -43,105 +20,48 @@ function mapStateToProps (state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    //getNews: () => getNews(dispatch)
     actions:bindActionCreators(actionCreators,dispatch)
   }
 }
 function clearTextFild() {
   document.getElementById('iTitle').value='';
-  text: document.getElementById('iText').value='';
+  document.getElementById('iText').value='';
 }
 
 class AddNews extends Component {
   SendNewsBtn(){
-    var data ={title: document.getElementById('iTitle').value,
-        text: document.getElementById('iText').value,
-        userId: Cookies.get('userId')
-    };
-    const { haveFile,currentDropzone} = this.props.myNews//
-    const {getNews, setError} = this.props.actions//
+    let Title = document.getElementById('iTitle').value;
+    let Text = document.getElementById('iText').value;
 
-    if (haveFile) {
-      currentDropzone.processQueue();
-      currentDropzone.on("success", function(file,res) {
-        data.link=res.fileName;
-        currentDropzone.removeAllFiles();
-        sendNewsToSrv(data,getNews);
-        data={};
+    const { haveFile,currentDropzone} = this.props.myNews;
+    const {getNews, setError, sendNews} = this.props.actions;
+    if (!Title && !Text && !haveFile)
+    {setError('Enter title or text or picture');}
+    else{
+      if (haveFile) {
+        sendNews( Title, Text); // Title, Text to store
+        currentDropzone.processQueue(); // send img -> and news
         clearTextFild();
         setError('');
-      });
-    }
-    else{
-      data.link='';
-      sendNewsToSrv(data,getNews);
-      clearTextFild();
-      setError('');
-      data={};
-
-    }/**/
-
-    /*
-    var data ={title: document.getElementById('iTitle').value,
-                text: document.getElementById('iText').value,
-                userId: Cookies.get('userId')
       }
-    const {getNews} =  this.props;
-    if (haveFile) {
-
-      request.post("http://127.0.0.1:9000/news/createFile")
-        .attach("image-file", ChoosedFile, ChoosedFile.name)
-        .then(function (result) {
-          if (result.text) {
-            data.link = JSON.parse(result.text).fileName;
-
-            $.post({
-              method: 'POST',
-              url: 'http://127.0.0.1:9000/news/createNews',
-              dataType: 'json',
-              cache: false,
-              header: {'Access-Control-Allow-Origin': '*'},
-              data: data,
-              beforeSend: function (xhr, settings) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('token'));
-              },
-              crossDomain: true
-            }).success(function (result) {
-              getNews();
-            }).error(function (err) {
-              console.log('err__', err.responseText);
-            })
-          }
-        });
-    } //ChoosedFile
-    else{
-      data.link='';
-      $.post({
-        method: 'POST',
-        url: 'http://127.0.0.1:9000/news/createNews',
-        dataType: 'json',
-        cache: false,
-        header: {'Access-Control-Allow-Origin': '*'},
-        data: data,
-        beforeSend: function (xhr, settings) {
-          xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('token'));
-        },
-        crossDomain: true
-      }).success(function (result) {
-        getNews();
-      }).error(function (err) {
-        console.log('err__', err.responseText);
-        //LoginError(err.responseText);
-      })
+      else{
+        var data ={
+          title: Title,
+          text: Text,
+          userId: Cookies.get('userId'),
+          link:''
+        };
+        actionCreators.sendNewsToSrv(data,getNews,setError);
+        clearTextFild();
+        setError('');
+      }/**/
     }
-  }/**/}
+}
   componentDidMount (){
-    //haveFile = false;
-/**/
   }
   render() {
 
-    const { errMsg} = this.props.myNews//
+    const {errMsg} = this.props.myNews
     return <div className='news-create'>
       <div className='row user-block'>
         <div className="col-lg-6">
@@ -157,7 +77,7 @@ class AddNews extends Component {
         <div className="col-lg-6">
           <div className='user-block'>
             <span id="basic-addon3">Add picture:</span>
-            <Dropzone />
+            <DropzoneMy />
           </div>
         </div>
         {errMsg?<span className='error-msg'>{errMsg}</span>:null}
